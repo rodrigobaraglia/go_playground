@@ -88,17 +88,14 @@ func reduce(m [][]float64, img [][]float64) ([][]float64, [][]float64) {
 				if j != i && m[j][i] != 0 {
 					base := m[j][i]
 
-					go func() {
-						for k := range m[j] {
+					for k := range m[j] {
 
-							m[j][k] = (m[j][k] * pivot) - (m[i][k] * base)
-						}
-					}()
-					go func() {
-						for k := range img[j] {
-							img[j][k] = (img[j][k] * pivot) - (img[i][k] * base)
-						}
-					}()
+						m[j][k] = (m[j][k] * pivot) - (m[i][k] * base)
+					}
+
+					for k := range img[j] {
+						img[j][k] = (img[j][k] * pivot) - (img[i][k] * base)
+					}
 
 				}
 			}
@@ -113,16 +110,14 @@ func reduce(m [][]float64, img [][]float64) ([][]float64, [][]float64) {
 		if m[i][i] != 0 {
 			divisor := m[i][i]
 			fmt.Println("Divisor: ", divisor)
-			go func() {
-				for j := range img[i] {
-					img[i][j] /= divisor
-				}
-			}()
-			go func() {
-				for k := range m[i] {
-					m[i][k] /= divisor
-				}
-			}()
+
+			for j := range img[i] {
+				img[i][j] /= divisor
+			}
+
+			for k := range m[i] {
+				m[i][k] /= divisor
+			}
 
 		}
 	}
